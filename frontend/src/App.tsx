@@ -1,28 +1,17 @@
 import { useState, useRef } from "react";
 import CardContent from "./components/card-content/card-content.component";
-
-const products = [
-  {
-    product_name: "Milanesa de nalga x kg",
-    priceVea: "$20,300.00",
-    priceMas: "$17,299.00",
-    priceCarrefour: "$16,500.00",
-  },
-  {
-    product_name: "Milanesa de cuadrada complement",
-    priceVea: "$10,200.00",
-    priceMas: "$15,200.00",
-    priceCarrefour: "$17,900.00",
-  },
-  {
-    product_name: "Milanesa de novillito por kg",
-    priceVea: "$3000.00",
-    priceMas: "$5899.99",
-    priceCarrefour: "$2500.00",
-  },
-];
+import { fetchProducts } from "./service/dataService";
+import { useQuery } from "@tanstack/react-query";
 
 export default function App() {
+
+  const { data, isPending } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+  });
+
+  const products = data ?? [];
+
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<"idle" | "exit-left" | "exit-right">(
     "idle",
@@ -31,7 +20,7 @@ export default function App() {
   const touchStartX = useRef<number | null>(null);
 
   const navigate = (dir: "next" | "prev") => {
-    if (transitioning.current) return;
+    if (transitioning.current || products.length === 0) return;
     transitioning.current = true;
     setPhase(dir === "next" ? "exit-left" : "exit-right");
 
@@ -62,20 +51,26 @@ export default function App() {
   const product = products[index];
   const nextProduct = products[(index + 1) % products.length];
 
-  const parsePrice = (v?: string) => {
-    if (!v) return Number.POSITIVE_INFINITY;
-    return Number(v.replace(/[$,]/g, ""));
+  const parsePrice = (v?: string | number | Number) => {
+    if (v === undefined || v === null) return Number.POSITIVE_INFINITY;
+    if (typeof v === "number") return v;
+    if (typeof v === "object" && v instanceof Number) return Number(v.valueOf());
+    return Number(String(v).replace(/[$,]/g, ""));
   };
 
-  const priceColor = (product: (typeof products)[0], v: string | undefined) => {
+  const priceColor = (
+    product: (typeof products)[0],
+    v: string | number | Number | undefined,
+  ) => {
     const prices = [
-      product.priceVea,
-      product.priceMas,
-      product.priceCarrefour,
-    ].filter((p): p is string => typeof p === "string");
-    const min = prices.length
-      ? Math.min(...prices.map(parsePrice))
-      : Number.POSITIVE_INFINITY;
+      product.price_vea,
+      product.price_mas,
+      product.price_carrefour,
+    ]
+      .filter((p) => p !== undefined && p !== null)
+      .map((p) => parsePrice(p as string | number | Number));
+
+    const min = prices.length ? Math.min(...prices) : Number.POSITIVE_INFINITY;
     return parsePrice(v) === min ? "#4ecca3" : "#c8cfe8";
   };
 
@@ -87,6 +82,8 @@ export default function App() {
         : "";
 
   const nextEnterClass = phase === "idle" ? "card-pop" : "";
+
+  if (isPending) return 'Loading...'
 
   return (
     // Main Container
@@ -130,7 +127,7 @@ export default function App() {
         <div className="relative">
           {/* Next card behind */}
           <div
-          className="py-15"
+            className="py-15"
             style={{
               position: "absolute",
               inset: 0,
@@ -153,7 +150,7 @@ export default function App() {
 
           <div
             key={index}
-            className={`${currentAnimClass || nextEnterClass} py-15`} 
+            className={`${currentAnimClass || nextEnterClass} py-15`}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             style={{
