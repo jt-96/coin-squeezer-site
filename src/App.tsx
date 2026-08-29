@@ -1,122 +1,136 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState, useRef } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const products = [
+  {
+    product_name: "Product A",
+    priceVea: "$20,300.00",
+    priceMas: "$17,299.00",
+    priceCarrefour: "$16,500.00",
+  },
+  {
+    product_name: "Product B",
+    priceVea: "$10,200.00",
+    priceMas: "$15,200.00",
+    priceC: "$17,900.00",
+  },
+  {
+    product_name: "Product C",
+    priceVea: "$3000.00",
+    priceMas: "$5899.99",
+    priceCarrefour: "$2500.00",
+  },
+];
 
+export default function App() {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    // Main Container
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#0d1120",
+        display: "flex",
+        flexDirection: "column",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+        color: "#fff",
+      }}
+    >
+      {/* Header */}
+      <header
+        style={{
+          textAlign: "center",
+          padding: "20px 0 18px",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          fontSize: "15px",
+          fontWeight: 600,
+          letterSpacing: "0.01em",
+          color: "#e8eaf0",
+        }}
+      >
+        <span style={{ marginRight: "6px", color: "#4ecca3" }}>%</span>
+        CoinSqueezer
+      </header>
 
-      <div className="ticks"></div>
+      {/* Main */}
+      <main
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "center",
+          paddingTop: "80px",
+          paddingBottom: "80px",
+        }}
+      >
+        <div style={{ position: "relative", width: "340px" }}>
+          {/* Next card behind */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "#1e2740",
+              borderRadius: "18px",
+              transform: "translateX(28px) scale(0.96)",
+              transformOrigin: "left center",
+              opacity: 0.6,
+              zIndex: 0,
+            }}
+          >
+            {/* Card goes here */}
+          </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          {/* Currently selected card */}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          <div
+            style={{
+              position: "relative",
+              backgroundColor: "#1e2740",
+              borderRadius: "18px",
+              zIndex: 1,
+              cursor: "grab",
+            }}
+          >
+            {/* Card content goes here */}
+          </div>
+
+          {/* Arrow button */}
+          <button
+            style={{
+              position: "absolute",
+              right: "-60px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              width: "42px",
+              height: "42px",
+              borderRadius: "12px",
+              backgroundColor: "#1a2238",
+              border: "1px solid rgba(255,255,255,0.1)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#c8cfe8",
+              zIndex: 2,
+              transition: "background 0.15s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#212c45")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#1a2238")
+            }
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M6 3l5 5-5 5"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </main>
+    </div>
+  );
 }
-
-export default App
