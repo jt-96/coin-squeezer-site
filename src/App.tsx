@@ -79,6 +79,15 @@ export default function App() {
     return parsePrice(v) === min ? "#4ecca3" : "#c8cfe8";
   };
 
+  const currentAnimClass =
+    phase === "exit-left"
+      ? "card-exit"
+      : phase === "exit-right"
+        ? "card-exit-right"
+        : "";
+
+  const nextEnterClass = phase === "idle" ? "card-pop" : "";
+
   return (
     // Main Container
     <div
@@ -143,6 +152,7 @@ export default function App() {
 
           <div
             key={index}
+            className={currentAnimClass || nextEnterClass}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             style={{
