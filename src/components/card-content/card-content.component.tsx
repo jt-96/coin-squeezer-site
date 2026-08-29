@@ -33,19 +33,19 @@ export default function CardContent({
         }}
       >
         <PriceRow
-          label="PRICE A"
-          value={product.priceA}
-          color={priceColor(product.priceA)}
+          label="Price Vea"
+          value={product.priceVea}
+          color={priceColor(product.priceVea)}
         />
         <PriceRow
-          label="PRICE B"
-          value={product.priceB}
-          color={priceColor(product.priceB)}
+          label="Price Mas"
+          value={product.priceMas}
+          color={priceColor(product.priceMas)}
         />
         <PriceRow
-          label="PRICE C"
-          value={product.priceC}
-          color={priceColor(product.priceC)}
+          label="Price Carr"
+          value={product.priceCarrefour}
+          color={priceColor(product.priceCarrefour)}
         />
       </div>
     </div>
