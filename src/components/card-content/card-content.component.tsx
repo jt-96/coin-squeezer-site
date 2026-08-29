@@ -1,3 +1,5 @@
+import PriceRow from "../price-row/price-row.component";
+
 export default function CardContent({
   product,
   priceColor,
@@ -29,7 +31,23 @@ export default function CardContent({
           flexDirection: "column",
           gap: "16px",
         }}
-      ></div>
+      >
+        <PriceRow
+          label="PRICE A"
+          value={product.priceA}
+          color={priceColor(product.priceA)}
+        />
+        <PriceRow
+          label="PRICE B"
+          value={product.priceB}
+          color={priceColor(product.priceB)}
+        />
+        <PriceRow
+          label="PRICE C"
+          value={product.priceC}
+          color={priceColor(product.priceC)}
+        />
+      </div>
     </div>
   );
 }
