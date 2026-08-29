@@ -11,10 +11,10 @@ export default function PriceRow({
     <div>
       <div
         style={{
-          fontSize: "10px",
+          fontSize: "15px",
           fontWeight: 700,
           letterSpacing: "0.1em",
-          color: "#3d4a63",
+          color: "#677da7",
           marginBottom: "4px",
         }}
       >
@@ -22,7 +22,7 @@ export default function PriceRow({
       </div>
       <div
         style={{
-          fontSize: "17px",
+          fontSize: "25px",
           fontWeight: 600,
           color,
           letterSpacing: "0.01em",

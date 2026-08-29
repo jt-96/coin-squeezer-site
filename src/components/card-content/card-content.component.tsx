@@ -8,11 +8,11 @@ export default function CardContent({
   priceColor: (v: string) => string;
 }) {
   return (
-    <div style={{ padding: "28px 28px 40px" }}>
-      <div style={{ marginBottom: "20px" }}>
+    <div className="py-3 px-5">
+      <div className="min-[320px]:w-40 min-[375px]:w-75 w-80" style={{ marginBottom: "20px" }}>
         <p
           style={{
-            fontSize: "13px",
+            fontSize: "18px",
             color: "#5a6580",
             margin: "4px 0 0",
             fontWeight: 500,

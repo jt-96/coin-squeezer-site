@@ -3,19 +3,19 @@ import CardContent from "./components/card-content/card-content.component";
 
 const products = [
   {
-    product_name: "Product A",
+    product_name: "Milanesa de nalga x kg",
     priceVea: "$20,300.00",
     priceMas: "$17,299.00",
     priceCarrefour: "$16,500.00",
   },
   {
-    product_name: "Product B",
+    product_name: "Milanesa de cuadrada complement",
     priceVea: "$10,200.00",
     priceMas: "$15,200.00",
     priceCarrefour: "$17,900.00",
   },
   {
-    product_name: "Product C",
+    product_name: "Milanesa de novillito por kg",
     priceVea: "$3000.00",
     priceMas: "$5899.99",
     priceCarrefour: "$2500.00",
@@ -127,15 +127,16 @@ export default function App() {
           paddingBottom: "80px",
         }}
       >
-        <div style={{ position: "relative", width: "340px" }}>
+        <div className="relative">
           {/* Next card behind */}
           <div
+          className="py-15"
             style={{
               position: "absolute",
               inset: 0,
               backgroundColor: "#1e2740",
               borderRadius: "18px",
-              transform: "translateX(28px) scale(0.96)",
+              transform: "translateX(25px) scale(0.96)",
               transformOrigin: "left center",
               opacity: 0.6,
               zIndex: 0,
@@ -152,7 +153,7 @@ export default function App() {
 
           <div
             key={index}
-            className={currentAnimClass || nextEnterClass}
+            className={`${currentAnimClass || nextEnterClass} py-15`} 
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             style={{
@@ -175,8 +176,8 @@ export default function App() {
             onClick={() => navigate("next")}
             style={{
               position: "absolute",
-              right: "-60px",
-              top: "50%",
+              right: "45%",
+              top: "100%",
               transform: "translateY(-50%)",
               width: "42px",
               height: "42px",
