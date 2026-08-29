@@ -5,7 +5,7 @@ const mysql = require("mysql2/promise");
 const { Connector } = require("@google-cloud/cloud-sql-connector");
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5173' })); 
+app.use(cors({ origin: process.env.CORS_URL })); 
 
 async function createDatabasePool() {
     const connector = new Connector();
