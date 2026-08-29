@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import CardContent from "./components/card-content/card-content.component";
 
 const products = [
   {
@@ -11,7 +12,7 @@ const products = [
     product_name: "Product B",
     priceVea: "$10,200.00",
     priceMas: "$15,200.00",
-    priceC: "$17,900.00",
+    priceCarrefour: "$17,900.00",
   },
   {
     product_name: "Product C",
@@ -22,6 +23,62 @@ const products = [
 ];
 
 export default function App() {
+  const [index, setIndex] = useState(0);
+  const [phase, setPhase] = useState<"idle" | "exit-left" | "exit-right">(
+    "idle",
+  );
+  const transitioning = useRef(false);
+  const touchStartX = useRef<number | null>(null);
+
+  const navigate = (dir: "next" | "prev") => {
+    if (transitioning.current) return;
+    transitioning.current = true;
+    setPhase(dir === "next" ? "exit-left" : "exit-right");
+
+    setTimeout(() => {
+      setIndex((prev) =>
+        dir === "next"
+          ? (prev + 1) % products.length
+          : (prev - 1 + products.length) % products.length,
+      );
+      setPhase("idle");
+      setTimeout(() => {
+        transitioning.current = false;
+      }, 350);
+    }, 260);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (diff > 40) navigate("next");
+    else if (diff < -40) navigate("prev");
+    touchStartX.current = null;
+  };
+
+  const product = products[index];
+  const nextProduct = products[(index + 1) % products.length];
+
+  const parsePrice = (v?: string) => {
+    if (!v) return Number.POSITIVE_INFINITY;
+    return Number(v.replace(/[$,]/g, ""));
+  };
+
+  const priceColor = (product: (typeof products)[0], v: string | undefined) => {
+    const prices = [
+      product.priceVea,
+      product.priceMas,
+      product.priceCarrefour,
+    ].filter((p): p is string => typeof p === "string");
+    const min = prices.length
+      ? Math.min(...prices.map(parsePrice))
+      : Number.POSITIVE_INFINITY;
+    return parsePrice(v) === min ? "#4ecca3" : "#c8cfe8";
+  };
+
   return (
     // Main Container
     <div
@@ -76,11 +133,18 @@ export default function App() {
             }}
           >
             {/* Card goes here */}
+            <CardContent
+              product={nextProduct}
+              priceColor={(v) => priceColor(nextProduct, v)}
+            />
           </div>
 
           {/* Currently selected card */}
 
           <div
+            key={index}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
             style={{
               position: "relative",
               backgroundColor: "#1e2740",
@@ -90,10 +154,15 @@ export default function App() {
             }}
           >
             {/* Card content goes here */}
+            <CardContent
+              product={product}
+              priceColor={(v) => priceColor(product, v)}
+            />
           </div>
 
           {/* Arrow button */}
           <button
+            onClick={() => navigate("next")}
             style={{
               position: "absolute",
               right: "-60px",
