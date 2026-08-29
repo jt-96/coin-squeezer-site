@@ -28,7 +28,7 @@ export default function PriceRow({
           letterSpacing: "0.01em",
         }}
       >
-        {value}
+        ${value}
       </div>
     </div>
   );
