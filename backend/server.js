@@ -12,28 +12,6 @@ let pool;
 
 async function createDatabasePool() {
   const connectorOptions = {};
-
-  if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
-    try {
-      connectorOptions.credentials = JSON.parse(
-        process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON,
-      );
-
-      connectorOptions.auth = new GoogleAuth({
-        credentials,
-        scopes: ["https://www.googleapis.com/auth/sqlservice.admin"],
-      });
-    } catch (e) {
-      throw new Error(
-        "GOOGLE_APPLICATION_CREDENTIALS_JSON variable is not a valid JSON string.",
-      );
-    }
-  } else {
-    throw new Error(
-      "GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable is missing.",
-    );
-  }
-
   const connector = new Connector(connectorOptions);
 
   const clientOpts = await connector.getOptions({
