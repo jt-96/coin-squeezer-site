@@ -1,11 +1,11 @@
-// @ts-ignore
 import PriceRow from "../price-row/price-row.component";
+import type { Product } from "../../service/product.type";
 
 export default function CardContent({
   product,
   priceColor,
 }: {
-  product: (typeof products)[0];
+  product: Product;
   priceColor: (v: string) => string;
 }) {
   return (
@@ -35,18 +35,18 @@ export default function CardContent({
       >
         <PriceRow
           label="Price Vea"
-          value={product.price_vea}
-          color={priceColor(product.price_vea)}
+          value={product.price_vea.toString()}
+          color={priceColor(product.price_vea.toString())}
         />
         <PriceRow
           label="Price Mas"
-          value={product.price_mas}
-          color={priceColor(product.price_mas)}
+          value={product.price_mas.toString()}
+          color={priceColor(product.price_mas.toString())}
         />
         <PriceRow
           label="Price Carr"
-          value={product.price_carrefour}
-          color={priceColor(product.price_carrefour)}
+          value={product.price_carrefour.toString()}
+          color={priceColor(product.price_carrefour.toString())}
         />
       </div>
     </div>
