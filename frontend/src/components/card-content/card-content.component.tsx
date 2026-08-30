@@ -1,3 +1,4 @@
+// @ts-ignore
 import PriceRow from "../price-row/price-row.component";
 
 export default function CardContent({
