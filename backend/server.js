@@ -8,8 +8,14 @@ const app = express();
 app.use(cors({ origin: process.env.CORS_URL })); 
 
 async function createDatabasePool() {
-    const connector = new Connector();
+  const connectorOptions = {};
 
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+    connectorOptions.credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+  }
+  
+  const connector = new Connector(connectorOptions);
+  
     const clientOpts = await connector.getOptions({
         instanceConnectionName: process.env.CLOUD_SQL_MYSQL_INSTANCE,
         ipType: process.env.CLOUD_SQL_MYSQL_IP_TYPE,
