@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql2/promise");
 const { Connector } = require("@google-cloud/cloud-sql-connector");
+const { GoogleAuth } = require("google-auth-library");
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_URL }));
@@ -17,6 +18,11 @@ async function createDatabasePool() {
       connectorOptions.credentials = JSON.parse(
         process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON,
       );
+
+      connectorOptions.auth = new GoogleAuth({
+        credentials,
+        scopes: ["https://www.googleapis.com/auth/sqlservice.admin"],
+      });
     } catch (e) {
       throw new Error(
         "GOOGLE_APPLICATION_CREDENTIALS_JSON variable is not a valid JSON string.",
@@ -45,13 +51,11 @@ async function createDatabasePool() {
 }
 
 async function startServer() {
-
   try {
     pool = await createDatabasePool();
     console.log("Connected to Cloud SQL!");
 
     app.listen(5000, () => console.log("Server running on port 5000"));
-
   } catch (e) {
     console.error("Failed to initialize or connect to Cloud SQL:", e.message);
     process.exit(1);
