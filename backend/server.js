@@ -53,7 +53,7 @@ async function startServer() {
     app.listen(5000, () => console.log("Server running on port 5000"));
 
   } catch (e) {
-    console.error("Failed to initialize or connect to Cloud SQL:", err.message);
+    console.error("Failed to initialize or connect to Cloud SQL:", e.message);
     process.exit(1);
   }
 }
